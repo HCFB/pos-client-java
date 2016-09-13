@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ApplicationRequest {
-    private ClientInfo clientInfo;
-    private Order order;
+    private ClientInfoDTO clientInfo;
+    private OrderDTO order;
     private String shopUrl;
 }

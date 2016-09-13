@@ -4,6 +4,7 @@ import org.dozer.DozerBeanMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,7 +16,9 @@ public class DozerConfiguration {
 
     @Bean
     DozerBeanMapper dozerBeanMapper() {
-        List<String> mappingFiles = Collections.singletonList("dozerJdk8Converters.xml");
+        List<String> mappingFiles = new ArrayList<>();
+        mappingFiles.add("dozerJdk8Converters.xml");
+        mappingFiles.add("classpath:/dozer/dozer-mapping.xml");
         DozerBeanMapper dozerBeanMapper = new DozerBeanMapper();
         dozerBeanMapper.setMappingFiles(mappingFiles);
         return dozerBeanMapper;

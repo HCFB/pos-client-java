@@ -13,11 +13,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-public class ApplicationResource {
+public class ApplicationResourceDTO {
     private String idApplication;
     private String evidSrv;
-    private ClientInfo clientInfo;
-    private Order order;
+    private ClientInfoDTO clientInfo;
+    private OrderDTO order;
     private String status;
     private String cancelReason;
     private String maxLimit;

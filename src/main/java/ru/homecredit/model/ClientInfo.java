@@ -1,18 +1,19 @@
-package ru.homecredit.web.model;
+package ru.homecredit.model;
 
 import lombok.Data;
-import org.dozer.Mapping;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * Created by RRybasov on 08.09.2016.
  */
 @Data
-public class ClientInfo {
-    @Mapping("name")
+@Entity
+@Table(name = "client_infos")
+public class ClientInfo extends AbstractModel {
     private String firstName;
-    @Mapping("lastname")
     private String lastName;
-    @Mapping("middlename")
     private String middleName;
     private String email;
     private String phone;

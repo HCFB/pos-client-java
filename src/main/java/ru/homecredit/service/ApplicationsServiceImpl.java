@@ -6,10 +6,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.homecredit.dao.ApplicationDAO;
+import ru.homecredit.dao.ClientInfoDAO;
+import ru.homecredit.dao.OrderDAO;
+import ru.homecredit.model.Application;
+import ru.homecredit.model.DeliveryAddress;
+import ru.homecredit.model.Item;
+import ru.homecredit.model.Order;
 import ru.homecredit.web.model.*;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by RRybasov on 08.09.2016.
@@ -20,42 +27,57 @@ public class ApplicationsServiceImpl implements ApplicationsService {
     private DozerBeanMapper mapper;
     private OAuth2RestOperations restOperations;
     private String createApplicationUrl;
+    private ApplicationDAO applicationDAO;
+    private OrderDAO orderDAO;
 
     @Autowired
     public ApplicationsServiceImpl(DozerBeanMapper mapper,
                                    OAuth2RestOperations restOperations,
+                                   ApplicationDAO applicationDAO,
+                                   OrderDAO orderDAO,
                                    @Value("${api.createApplication.uri}") String createApplicationUrl) {
         this.mapper = mapper;
         this.restOperations = restOperations;
+        this.applicationDAO = applicationDAO;
         this.createApplicationUrl = createApplicationUrl;
+        this.orderDAO = orderDAO;
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ApplicationResponse> createApplication(CreateApplicationRequest createApplicationRequest, String host) {
-        ClientInfo clientInfo = mapper.map(createApplicationRequest, ClientInfo.class);
-        Order order = generateOrder(createApplicationRequest);
-        ApplicationRequest request = new ApplicationRequest(clientInfo, order, host);
+        ClientInfoDTO clientInfo = mapper.map(createApplicationRequest, ClientInfoDTO.class);
+        OrderDTO order = generateOrder(createApplicationRequest);
+        ApplicationRequest request = new ApplicationRequest(clientInfo, order, String.format("%s?order=%s", host, order.getOrderNum()));
         ResponseEntity<ApplicationResponse> response = restOperations.postForEntity(createApplicationUrl, request, ApplicationResponse.class);
-        response.getBody().getApplicationResource().getLinks();
+        //clientInfoDAO.save(mapper.map(clientInfo, ClientInfo.class));
         return response;
     }
 
-    private Order generateOrder(CreateApplicationRequest createApplicationRequest) {
+    private OrderDTO generateOrder(CreateApplicationRequest createApplicationRequest) {
         Order order = new Order();
-        DeliveryAddress deliveryAddress = mapper.map(createApplicationRequest, DeliveryAddress.class);
-        order.setItems(createApplicationRequest.getItems());
-        order.setDeliveryAddress(deliveryAddress);
+        DeliveryAddressDTO deliveryAddressDTO = mapper.map(createApplicationRequest, DeliveryAddressDTO.class);
+        List<Item> items = new ArrayList<>();
+        for(ItemDTO item : createApplicationRequest.getItems()) {
+            Item newItem = mapper.map(item, Item.class);
+            newItem.setOrder(order);
+            items.add(newItem);
+        }
+        order.setItems(items);
+        order.setDeliveryAddress(mapper.map(deliveryAddressDTO, DeliveryAddress.class));
         order.setProductCode("0-0-12");
-        Random rn = new Random();
-        order.setOrderNum(String.valueOf(rn.nextInt(999999) + 100000));
+        //Random rn = new Random();
+        //order.setOrderNum(String.valueOf(rn.nextInt(999999) + 100000));
+        order.setOrderDateComplete(new Date());
         order.setOrderSum(getOrderSum(createApplicationRequest.getItems()));
-        return order;
+        orderDAO.save(order);
+        return mapper.map(order, OrderDTO.class);
     }
 
 
-    private double getOrderSum(List<Item> items) {
+    private double getOrderSum(List<ItemDTO> items) {
         double orderSum = 0;
-        for(Item item : items) {
+        for(ItemDTO item : items) {
             orderSum += item.getPrice();
         }
         return orderSum;

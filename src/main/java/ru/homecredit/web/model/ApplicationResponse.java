@@ -11,5 +11,5 @@ import org.springframework.hateoas.Resource;
 @NoArgsConstructor
 public class ApplicationResponse {
     private String bankUrl;
-    private Resource<ApplicationResource> applicationResource;
+    private ApplicationResourceDTO applicationResource;
 }
