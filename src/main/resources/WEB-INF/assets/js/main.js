@@ -58,10 +58,10 @@ $("#client-info-form").on("submit", function (ev) {
         url : "/applicationCreate"
     }).done(function (res) {
         console.log(res);
-        // $("#client-info-form")[0].reset()
-        // $("#myModal").fadeOut();
-        // $(".modal-backdrop").fadeOut();
-        // window.location.href = res.bankUrl;
+        $("#client-info-form")[0].reset()
+        $("#myModal").fadeOut();
+        $(".modal-backdrop").fadeOut();
+        window.location.href = res.bankUrl;
     }).fail(function (res) {
         console.log(res);
         alert("Произошла ошибка");
