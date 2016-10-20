@@ -7,10 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.homecredit.dao.ApplicationDAO;
-import ru.homecredit.dao.ClientInfoDAO;
 import ru.homecredit.dao.OrderDAO;
-import ru.homecredit.model.Application;
 import ru.homecredit.model.DeliveryAddress;
 import ru.homecredit.model.Item;
 import ru.homecredit.model.Order;
@@ -27,18 +24,15 @@ public class ApplicationsServiceImpl implements ApplicationsService {
     private DozerBeanMapper mapper;
     private OAuth2RestOperations restOperations;
     private String createApplicationUrl;
-    private ApplicationDAO applicationDAO;
     private OrderDAO orderDAO;
 
     @Autowired
     public ApplicationsServiceImpl(DozerBeanMapper mapper,
                                    OAuth2RestOperations restOperations,
-                                   ApplicationDAO applicationDAO,
                                    OrderDAO orderDAO,
                                    @Value("${api.createApplication.uri}") String createApplicationUrl) {
         this.mapper = mapper;
         this.restOperations = restOperations;
-        this.applicationDAO = applicationDAO;
         this.createApplicationUrl = createApplicationUrl;
         this.orderDAO = orderDAO;
     }
