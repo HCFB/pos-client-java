@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.homecredit.dao.ApplicationDAO;
 import ru.homecredit.dao.OrderDAO;
+import ru.homecredit.model.Application;
 import ru.homecredit.model.DeliveryAddress;
 import ru.homecredit.model.Item;
 import ru.homecredit.model.Order;
@@ -24,27 +26,26 @@ public class ApplicationsServiceImpl implements ApplicationsService {
     private DozerBeanMapper mapper;
     private OAuth2RestOperations restOperations;
     private String createApplicationUrl;
-    private OrderDAO orderDAO;
+    private ApplicationDAO applicationDAO;
 
     @Autowired
     public ApplicationsServiceImpl(DozerBeanMapper mapper,
                                    OAuth2RestOperations restOperations,
-                                   OrderDAO orderDAO,
+                                   ApplicationDAO applicationDAO,
                                    @Value("${api.createApplication.uri}") String createApplicationUrl) {
         this.mapper = mapper;
         this.restOperations = restOperations;
         this.createApplicationUrl = createApplicationUrl;
-        this.orderDAO = orderDAO;
+        this.applicationDAO = applicationDAO;
     }
 
     @Override
-    @Transactional
     public ResponseEntity<ApplicationResponse> createApplication(CreateApplicationRequest createApplicationRequest, String host) {
         ClientInfoDTO clientInfo = mapper.map(createApplicationRequest, ClientInfoDTO.class);
         OrderDTO order = generateOrder(createApplicationRequest);
         ApplicationRequest request = new ApplicationRequest(clientInfo, order, String.format("%s?order=%s", host, order.getOrderNum()));
         ResponseEntity<ApplicationResponse> response = restOperations.postForEntity(createApplicationUrl, request, ApplicationResponse.class);
-        //clientInfoDAO.save(mapper.map(clientInfo, ClientInfo.class));
+        applicationDAO.save(mapper.map(response.getBody(), Application.class));
         return response;
     }
 
@@ -54,17 +55,13 @@ public class ApplicationsServiceImpl implements ApplicationsService {
         List<Item> items = new ArrayList<>();
         for(ItemDTO item : createApplicationRequest.getItems()) {
             Item newItem = mapper.map(item, Item.class);
-            newItem.setOrder(order);
             items.add(newItem);
         }
         order.setItems(items);
         order.setDeliveryAddress(mapper.map(deliveryAddressDTO, DeliveryAddress.class));
         order.setProductCode("0-0-12");
-        //Random rn = new Random();
-        //order.setOrderNum(String.valueOf(rn.nextInt(999999) + 100000));
         order.setOrderDateComplete(new Date());
         order.setOrderSum(getOrderSum(createApplicationRequest.getItems()));
-        orderDAO.save(order);
         return mapper.map(order, OrderDTO.class);
     }
 

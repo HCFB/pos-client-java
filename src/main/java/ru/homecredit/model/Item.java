@@ -19,6 +19,6 @@ public class Item extends AbstractModel {
     private Integer quantity;
     private Integer weight;
     @ManyToOne
-    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    @JoinColumn(insertable = false, updatable = false, name = "order_id", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "order_id"))
     private Order order;
 }

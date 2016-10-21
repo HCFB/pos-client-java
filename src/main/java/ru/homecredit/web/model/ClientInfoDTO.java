@@ -8,11 +8,8 @@ import org.dozer.Mapping;
  */
 @Data
 public class ClientInfoDTO {
-//    @Mapping("name")
     private String firstName;
-//    @Mapping("lastname")
     private String lastName;
-//    @Mapping("middlename")
     private String middleName;
     private String email;
     private String phone;

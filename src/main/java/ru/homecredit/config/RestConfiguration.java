@@ -47,9 +47,6 @@ public class RestConfiguration {
     protected ClientCredentialsResourceDetails resource() {
 
         ClientCredentialsResourceDetails resource = new ClientCredentialsResourceDetails();
-//        List scopes = new ArrayList<String>(2);
-//        scopes.add("write");
-//        scopes.add("read");
         resource.setId("oauthClientPos");
         resource.setAccessTokenUri(tokenUrl);
         resource.setClientId(clientId);

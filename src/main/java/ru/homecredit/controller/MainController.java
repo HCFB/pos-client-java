@@ -35,41 +35,6 @@ public class MainController {
                 this.applicationsService = applicationsService;
     }
 
-    @RequestMapping(value = "/")
-    public String mainPage() {
-        /*restTemplate.postForObject("https://api-sandbox.homecredit.ru/e-shop/v1/applications", "{\n" +
-                "  \"clientInfo\" : {\n" +
-                "    \"email\" : \"test@example.com\",\n" +
-                "    \"firstName\" : \"Ivan\",\n" +
-                "    \"lastName\" : \"Ivanovich\",\n" +
-                "    \"middleName\" : \"Ivanov\",\n" +
-                "    \"phone\" : \"9260000000\",\n" +
-                "    \"sex\" : \"MALE\"\n" +
-                "  },\n" +
-                "  \"order\" : {\n" +
-                "    \"deliveryAddress\" : {\n" +
-                "      \"address\" : \"Москва, ул. Правды 8 к.1\",\n" +
-                "      \"code\" : \"A123\"\n" +
-                "    },\n" +
-                "    \"items\" : [ {\n" +
-                "      \"model\" : \"ItemModel\",\n" +
-                "      \"name\" : \"ItemName\",\n" +
-                "      \"partnerGoodCatalog\" : \"TEST\",\n" +
-                "      \"price\" : 10,\n" +
-                "      \"producer\" : \"Someone\",\n" +
-                "      \"quantity\" : 1,\n" +
-                "      \"weight\" : 1\n" +
-                "    } ],\n" +
-                "    \"orderDateComplete\" : \"2016-07-05\",\n" +
-                "    \"orderNum\" : \"1467717042582\",\n" +
-                "    \"orderSum\" : 10,\n" +
-                "    \"productCode\" : \"0-0-12\"\n" +
-                "  },\n" +
-                "  \"shopUrl\" : \"https://example.com?id=100500\"\n" +
-                "}", String.class );*/
-        return restTemplate.getAccessToken().getValue();
-    }
-
     @RequestMapping(value = "applicationCreate", method = RequestMethod.POST)
     public ResponseEntity<ApplicationResponse> createApplication(@RequestBody CreateApplicationRequest createApplicationRequest, @RequestHeader("Host") String host) {
         return applicationsService.createApplication(createApplicationRequest, host);
