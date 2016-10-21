@@ -1,44 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
     <changeSet author="RRybasov" id="20160908-1-1">
-        <createSequence sequenceName="application_id_seq"/>
-        <createTable tableName="applications" remarks="Итем кредита">
-            <column name="id" type="BIGINT" defaultValueSequenceNext="application_id_seq" remarks="Новое значение счетчика">
-                <constraints  primaryKey="true" primaryKeyName="PK_APPLICATION"/>
-            </column>
-            <column name="bank_url" type="TEXT" remarks="url банка">
-                <constraints nullable="false"/>
-            </column>
-            <column name="application_resource_id" type="BIGINT" remarks="">
-                <constraints nullable="true"/>
-            </column>
-        </createTable>
 
-        <createSequence sequenceName="application_resource_id_seq"/>
-        <createTable tableName="application_resources" remarks="информация о клиентах">
-            <column name="id" type="BIGINT" defaultValueSequenceNext="application_resource_id_seq" remarks="Новое значение счетчика">
-                <constraints primaryKey="true" primaryKeyName="PK_APPLICATION_RESOURCE"/>
+
+
+
+        <createSequence sequenceName="delivery_address_id_seq"/>
+        <createTable tableName="delivery_addresses" remarks="Таблица адресов">
+            <column name="id" type="BIGINT" defaultValueSequenceNext="delivery_address_id_seq" remarks="Новое значение счетчика">
+                <constraints primaryKey="true" primaryKeyName="PK_ADDRESS"/>
             </column>
-            <column name="id_application" type="TEXT" remarks="id в системе">
+            <column name="address" type="TEXT">
                 <constraints nullable="false"/>
             </column>
-            <column name="evid_srv" type="TEXT" remarks="">
-                <constraints nullable="true"/>
-            </column>
-            <column name="client_info_id" type="BIGINT" remarks="">
+            <column name="code" type="VARCHAR(20)">
                 <constraints nullable="false"/>
-            </column>
-            <column name="order_id" type="BIGINT" remarks="">
-                <constraints nullable="false"/>
-            </column>
-            <column name="status" type="TEXT">
-                <constraints nullable="true"/>
-            </column>
-            <column name="cancel_reason" type="TEXT">
-                <constraints nullable="true"/>
-            </column>
-            <column name="max_limit" type="TEXT">
-                <constraints nullable="true"/>
             </column>
         </createTable>
 
@@ -48,7 +24,7 @@
                 <constraints primaryKey="true" primaryKeyName="PK_ORDER"/>
             </column>
             <column name="delivery_address_id" type="BIGINT">
-                <constraints nullable="false"/>
+                <constraints nullable="false" foreignKeyName="delivery_address_foreign" referencedTableName="delivery_addresses" referencedColumnNames="id"/>
             </column>
             <column name="order_date_complete" type="DATE">
                 <constraints nullable="true"/>
@@ -64,18 +40,7 @@
             </column>
         </createTable>
 
-        <createSequence sequenceName="delivery_address_id_seq"/>
-        <createTable tableName="delivery_addresses" remarks="Таблица адресов">
-            <column name="id" type="BIGINT" defaultValueSequenceNext="delivery_address_id_seq" remarks="Новое значение счетчика">
-                <constraints primaryKey="true" primaryKeyName="PK_ADDRESS"/>
-            </column>
-            <column name="address" type="TEXT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="code" type="VARCHAR(20)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
+
 
         <createSequence sequenceName="items_id_seq"/>
         <createTable tableName="items">
@@ -83,7 +48,7 @@
                 <constraints primaryKey="true" primaryKeyName="PK_ITEM"/>
             </column>
             <column name="order_id" type="BIGINT">
-                <constraints nullable="false"/>
+                <constraints nullable="false" foreignKeyName="order_foreign" referencedTableName="orders" referencedColumnNames="id" />
             </column>
             <column name="model" type="TEXT">
                 <constraints nullable="false"/>
@@ -130,6 +95,46 @@
             </column>
             <column name="email" type="VARCHAR(255)" remarks="E-mail">
                 <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createSequence sequenceName="application_resource_id_seq"/>
+        <createTable tableName="application_resources" remarks="информация о клиентах">
+            <column name="id" type="BIGINT" defaultValueSequenceNext="application_resource_id_seq" remarks="Новое значение счетчика">
+                <constraints primaryKey="true" primaryKeyName="PK_APPLICATION_RESOURCE"/>
+            </column>
+            <column name="id_application" type="TEXT" remarks="id в системе">
+               <constraints nullable="false"/><!-- foreignKeyName="application_foreign" referencedTableName="applications" referencedColumnNames="id"-->
+            </column>
+            <column name="evid_srv" type="TEXT" remarks="">
+                <constraints nullable="true"/>
+            </column>
+            <column name="client_info_id" type="BIGINT" remarks="">
+                <constraints nullable="false" foreignKeyName="client_info_foreign" referencedTableName="client_infos" referencedColumnNames="id"/>
+            </column>
+            <column name="order_id" type="BIGINT" remarks="">
+                <constraints nullable="false" foreignKeyName="orders_foreign" referencedTableName="orders" referencedColumnNames="id"/>
+            </column>
+            <column name="status" type="TEXT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="cancel_reason" type="TEXT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="max_limit" type="TEXT">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <createSequence sequenceName="application_id_seq"/>
+        <createTable tableName="applications" remarks="Итем кредита">
+            <column name="id" type="BIGINT" defaultValueSequenceNext="application_id_seq" remarks="Новое значение счетчика">
+                <constraints  primaryKey="true" primaryKeyName="PK_APPLICATION"/>
+            </column>
+            <column name="bank_url" type="TEXT" remarks="url банка">
+                <constraints nullable="false"/>
+            </column>
+            <column name="application_resource_id" type="BIGINT" remarks="">
+                <constraints nullable="true" foreignKeyName="application_resources_foreign" referencedTableName="application_resources" referencedColumnNames="id"/>
             </column>
         </createTable>
     </changeSet>
