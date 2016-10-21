@@ -48,7 +48,7 @@
                 <constraints primaryKey="true" primaryKeyName="PK_ITEM"/>
             </column>
             <column name="order_id" type="BIGINT">
-                <constraints nullable="false" foreignKeyName="order_foreign" referencedTableName="orders" referencedColumnNames="id" />
+                <constraints foreignKeyName="order_foreign" referencedTableName="orders" referencedColumnNames="id" />
             </column>
             <column name="model" type="TEXT">
                 <constraints nullable="false"/>
