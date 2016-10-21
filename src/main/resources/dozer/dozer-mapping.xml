@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+    <mapping>
+        <class-a>ru.homecredit.web.model.CreateApplicationRequest</class-a>
+        <class-b>ru.homecredit.web.model.ClientInfoDTO</class-b>
+        <field>
+            <a>name</a>
+            <b>firstName</b>
+        </field>
+        <field>
+            <a>lastname</a>
+            <b>lastName</b>
+        </field>
+        <field>
+            <a>middlename</a>
+            <b>middleName</b>
+        </field>
+    </mapping>
+
+    <mapping>
+        <class-a>ru.homecredit.model.Application</class-a>
+        <class-b>ru.homecredit.web.model.ApplicationResponse</class-b>
+    </mapping>
+    <mapping>
+        <class-a>ru.homecredit.model.ApplicationResource</class-a>
+        <class-b>ru.homecredit.web.model.ApplicationResourceDTO</class-b>
+    </mapping>
+    <mapping>
+        <class-a>ru.homecredit.model.ClientInfo</class-a>
+        <class-b>ru.homecredit.web.model.ClientInfoDTO</class-b>
+    </mapping>
+    <mapping>
+        <class-a>ru.homecredit.model.Order</class-a>
+        <class-b>ru.homecredit.web.model.OrderDTO</class-b>
+        <field>
+            <a>id</a>
+            <b>orderNum</b>
+        </field>
+    </mapping>
+    <mapping>
+        <class-a>ru.homecredit.model.Item</class-a>
+        <class-b>ru.homecredit.web.model.ItemDTO</class-b>
+    </mapping>
+    <mapping>
+        <class-a>ru.homecredit.model.DeliveryAddress</class-a>
+        <class-b>ru.homecredit.web.model.DeliveryAddressDTO</class-b>
+    </mapping>
+
+</mappings>
