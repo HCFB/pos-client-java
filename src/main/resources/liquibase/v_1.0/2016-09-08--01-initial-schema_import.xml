@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
-    <changeSet author="RRybasov" id="20160908-1-1">
-
-
-
-
+    <changeSet author="RRybasov" id="20160908-1-1" >
         <createSequence sequenceName="delivery_address_id_seq"/>
         <createTable tableName="delivery_addresses" remarks="Таблица адресов">
-            <column name="id" type="BIGINT" defaultValueSequenceNext="delivery_address_id_seq" remarks="Новое значение счетчика">
+            <column name="id" type="BIGINT" remarks="Новое значение счетчика">
                 <constraints primaryKey="true" primaryKeyName="PK_ADDRESS"/>
             </column>
             <column name="address" type="TEXT">
@@ -20,7 +16,7 @@
 
         <createSequence sequenceName="order_id_seq"/>
         <createTable tableName="orders">
-            <column name="id" type="BIGINT" defaultValueSequenceNext="order_id_seq" remarks="Новое значение счетчика">
+            <column name="id" type="BIGINT" remarks="Новое значение счетчика">
                 <constraints primaryKey="true" primaryKeyName="PK_ORDER"/>
             </column>
             <column name="delivery_address_id" type="BIGINT">
@@ -29,9 +25,6 @@
             <column name="order_date_complete" type="DATE">
                 <constraints nullable="true"/>
             </column>
-            <!--<column name="order_num" type="VARCHAR(50)">-->
-                <!--<constraints nullable="false"/>-->
-            <!--</column>-->
             <column name="order_sum" type="double">
                 <constraints nullable="false"/>
             </column>
@@ -40,15 +33,13 @@
             </column>
         </createTable>
 
-
-
         <createSequence sequenceName="items_id_seq"/>
         <createTable tableName="items">
-            <column name="id" type="BIGINT" defaultValueSequenceNext="items_id_seq" remarks="Новое значение счетчика">
+            <column name="id" type="BIGINT" remarks="Новое значение счетчика">
                 <constraints primaryKey="true" primaryKeyName="PK_ITEM"/>
             </column>
-            <column name="order_id" type="BIGINT">
-                <constraints foreignKeyName="order_foreign" referencedTableName="orders" referencedColumnNames="id" />
+            <column name="order_id"  type="BIGINT">
+                <constraints nullable="true"/>
             </column>
             <column name="model" type="TEXT">
                 <constraints nullable="false"/>
@@ -75,7 +66,7 @@
 
         <createSequence sequenceName="client_info_id_seq"/>
         <createTable tableName="client_infos" remarks="информация о клиентах">
-            <column name="id" type="BIGINT" defaultValueSequenceNext="client_info_id_seq" remarks="Новое значение счетчика">
+            <column name="id" type="BIGINT"  remarks="Новое значение счетчика">
                 <constraints primaryKey="true" primaryKeyName="PK_CLIENT_INFO"/>
             </column>
             <column name="first_name" type="VARCHAR(255)" remarks="Имя">
@@ -100,7 +91,7 @@
 
         <createSequence sequenceName="application_resource_id_seq"/>
         <createTable tableName="application_resources" remarks="информация о клиентах">
-            <column name="id" type="BIGINT" defaultValueSequenceNext="application_resource_id_seq" remarks="Новое значение счетчика">
+            <column name="id" type="BIGINT" remarks="Новое значение счетчика">
                 <constraints primaryKey="true" primaryKeyName="PK_APPLICATION_RESOURCE"/>
             </column>
             <column name="id_application" type="TEXT" remarks="id в системе">
@@ -127,7 +118,7 @@
         </createTable>
         <createSequence sequenceName="application_id_seq"/>
         <createTable tableName="applications" remarks="Итем кредита">
-            <column name="id" type="BIGINT" defaultValueSequenceNext="application_id_seq" remarks="Новое значение счетчика">
+            <column name="id" type="BIGINT" remarks="Новое значение счетчика">
                 <constraints  primaryKey="true" primaryKeyName="PK_APPLICATION"/>
             </column>
             <column name="bank_url" type="TEXT" remarks="url банка">

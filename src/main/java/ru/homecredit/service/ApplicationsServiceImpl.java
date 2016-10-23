@@ -27,29 +27,35 @@ public class ApplicationsServiceImpl implements ApplicationsService {
     private OAuth2RestOperations restOperations;
     private String createApplicationUrl;
     private ApplicationDAO applicationDAO;
+    private OrderDAO orderDAO;
 
     @Autowired
     public ApplicationsServiceImpl(DozerBeanMapper mapper,
                                    OAuth2RestOperations restOperations,
                                    ApplicationDAO applicationDAO,
+                                   OrderDAO orderDAO,
                                    @Value("${api.createApplication.uri}") String createApplicationUrl) {
         this.mapper = mapper;
         this.restOperations = restOperations;
         this.createApplicationUrl = createApplicationUrl;
         this.applicationDAO = applicationDAO;
+        this.orderDAO = orderDAO;
     }
 
     @Override
     public ResponseEntity<ApplicationResponse> createApplication(CreateApplicationRequest createApplicationRequest, String host) {
         ClientInfoDTO clientInfo = mapper.map(createApplicationRequest, ClientInfoDTO.class);
-        OrderDTO order = generateOrder(createApplicationRequest);
-        ApplicationRequest request = new ApplicationRequest(clientInfo, order, String.format("%s?order=%s", host, order.getOrderNum()));
+        Order order = generateOrder(createApplicationRequest);
+        OrderDTO orderDto = mapper.map(order, OrderDTO.class);
+        ApplicationRequest request = new ApplicationRequest(clientInfo, orderDto, String.format("%s?order=%s", host, orderDto.getOrderNum()));
         ResponseEntity<ApplicationResponse> response = restOperations.postForEntity(createApplicationUrl, request, ApplicationResponse.class);
-        applicationDAO.save(mapper.map(response.getBody(), Application.class));
+        Application application = mapper.map(response.getBody(), Application.class);
+        application.getApplicationResource().setOrder(order);
+        applicationDAO.save(application);
         return response;
     }
 
-    private OrderDTO generateOrder(CreateApplicationRequest createApplicationRequest) {
+    private Order generateOrder(CreateApplicationRequest createApplicationRequest) {
         Order order = new Order();
         DeliveryAddressDTO deliveryAddressDTO = mapper.map(createApplicationRequest, DeliveryAddressDTO.class);
         List<Item> items = new ArrayList<>();
@@ -62,7 +68,8 @@ public class ApplicationsServiceImpl implements ApplicationsService {
         order.setProductCode("0-0-12");
         order.setOrderDateComplete(new Date());
         order.setOrderSum(getOrderSum(createApplicationRequest.getItems()));
-        return mapper.map(order, OrderDTO.class);
+        orderDAO.save(order);
+        return order;
     }
 
 

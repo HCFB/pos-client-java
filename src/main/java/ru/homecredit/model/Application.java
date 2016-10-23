@@ -10,7 +10,11 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "applications")
-public class Application extends AbstractModel {
+public class Application {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "application_id_seq")
+    @SequenceGenerator(name = "application_id_seq", sequenceName = "application_id_seq", allocationSize = 1)
+    private Long id;
     private String bankUrl;
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn
