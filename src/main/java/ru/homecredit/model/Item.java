@@ -10,7 +10,11 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "items")
-public class Item extends AbstractModel {
+public class Item {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_id_seq")
+    @SequenceGenerator(name = "item_id_seq", sequenceName = "item_id_seq", allocationSize = 1)
+    private Long id;
     private String model;
     private String name;
     private String partnerGoodCatalog;
@@ -19,6 +23,6 @@ public class Item extends AbstractModel {
     private Integer quantity;
     private Integer weight;
     @ManyToOne
-    @JoinColumn(insertable = false, updatable = false, name = "order_id", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "order_id"))
+    @JoinColumn(insertable = false, updatable = false, name = "order_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "order_id"))
     private Order order;
 }

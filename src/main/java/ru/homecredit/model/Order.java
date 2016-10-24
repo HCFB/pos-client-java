@@ -14,7 +14,11 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "orders")
-public class Order extends AbstractModel {
+public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_id_seq")
+    @SequenceGenerator(name = "order_id_seq", sequenceName = "order_id_seq", allocationSize = 1)
+    private Long id;
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(referencedColumnName = "id")
     private DeliveryAddress deliveryAddress;
