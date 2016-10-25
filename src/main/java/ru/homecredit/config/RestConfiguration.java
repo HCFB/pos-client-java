@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.springframework.hateoas.MediaTypes.HAL_JSON;
-
 
 /**
  * Created by RRybasov on 05.07.16.
