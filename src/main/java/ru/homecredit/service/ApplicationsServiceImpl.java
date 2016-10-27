@@ -46,7 +46,7 @@ public class ApplicationsServiceImpl implements ApplicationsService {
         ClientInfoDTO clientInfo = mapper.map(createApplicationRequest, ClientInfoDTO.class);
         Order order = generateOrder(createApplicationRequest);
         OrderDTO orderDto = mapper.map(order, OrderDTO.class);
-        ApplicationRequest request = new ApplicationRequest(clientInfo, orderDto, String.format("%s/accept?order=%s", host, orderDto.getOrderNum()));
+        ApplicationRequest request = new ApplicationRequest(clientInfo, orderDto, String.format("http://%s/accept?order=%s&", host, orderDto.getOrderNum()));
         ResponseEntity<ApplicationResponse> response = restOperations.postForEntity(createApplicationUrl, request, ApplicationResponse.class);
         Application application = mapper.map(response.getBody(), Application.class);
         application.getApplicationResource().setOrder(order);
