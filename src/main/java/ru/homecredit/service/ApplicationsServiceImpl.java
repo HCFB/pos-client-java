@@ -64,7 +64,7 @@ public class ApplicationsServiceImpl implements ApplicationsService {
         }
         order.setItems(items);
         order.setDeliveryAddress(mapper.map(deliveryAddressDTO, DeliveryAddress.class));
-        order.setProductCode("0-0-12");
+        order.setProductCode("0-0-24");
         order.setOrderDateComplete(new Date());
         order.setOrderSum(getOrderSum(createApplicationRequest.getItems()));
         orderDAO.save(order);
