@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.homecredit.service.ApplicationsService;
 import ru.homecredit.service.OrderService;
-import ru.homecredit.web.model.*;
+import ru.homecredit.web.model.PosOnline.ApplicationResponse;
+import ru.homecredit.web.model.PosOnline.CreateApplicationRequest;
+import ru.homecredit.web.model.PosOnline.OrderDTO;
 
 
 /**
@@ -41,7 +43,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/accept", method = RequestMethod.GET)
-    public String getAccept(@RequestParam String order) {
-        return "redirect:/front/accept.html?order=" + order;
+    public String getAccept(@RequestParam String order, @RequestParam String status) {
+        return "redirect:/front/accept.html?order=" + order + "&status=" + status;
     }
 }

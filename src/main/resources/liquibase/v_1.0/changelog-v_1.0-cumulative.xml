@@ -6,4 +6,5 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
 
     <include file="2016-09-08--01-initial-schema_import.xml" relativeToChangelogFile="true"/>
+    <include file="2016-11-17--02-add_cod_tables.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

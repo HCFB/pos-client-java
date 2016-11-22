@@ -1,7 +1,6 @@
-package ru.homecredit.web.model;
+package ru.homecredit.web.model.PosOnline;
 
 import lombok.Data;
-import org.dozer.Mapping;
 
 /**
  * Created by RRybasov on 08.09.2016.

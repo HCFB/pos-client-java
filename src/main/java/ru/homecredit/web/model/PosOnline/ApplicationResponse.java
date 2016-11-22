@@ -1,8 +1,7 @@
-package ru.homecredit.web.model;
+package ru.homecredit.web.model.PosOnline;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.hateoas.Resource;
 
 /**
  * Created by RRybasov on 08.09.2016.

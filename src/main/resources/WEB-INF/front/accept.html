@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="row">
-            <h1>Ваша заявка подверждена!</h1>
+            <h1>Ваша заявка {{status}}!</h1>
                 <table class="table table-bordered">
                     <thead>
                         <th>Название</th>
@@ -67,7 +67,22 @@
     <script type="application/javascript">
         $(document).ready(function (el) {
             var orderID = url("?order");
+            var status;
+            <!-- wait_approve(Ошибка), reject(Отказ), wait_approve(NMD), approve(Подтверждение) -->
+            switch (url("?status")) {
+                case "wait_approve" :
+                    status = "требует больше данных";
+                    break;
+                case "reject" :
+                    status = "получила отказ";
+                    break;
+                case "approve" :
+                    status = "подтверждена";
+                    break;
+            }
+
             $.get("/order/" + orderID, function (res) {
+                res.status = status;
                 $(".container").html(Handlebars.compile($("#order-template").html())(res));
             });
         });
