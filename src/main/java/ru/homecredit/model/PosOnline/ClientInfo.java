@@ -1,4 +1,4 @@
-package ru.homecredit.model;
+package ru.homecredit.model.PosOnline;
 
 import lombok.Data;
 

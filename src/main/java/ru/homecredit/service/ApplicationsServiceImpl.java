@@ -9,13 +9,15 @@ import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Service;
 import ru.homecredit.dao.ApplicationDAO;
 import ru.homecredit.dao.OrderDAO;
-import ru.homecredit.model.Application;
-import ru.homecredit.model.DeliveryAddress;
-import ru.homecredit.model.Item;
-import ru.homecredit.model.Order;
+import ru.homecredit.model.PosOnline.Application;
+import ru.homecredit.model.PosOnline.DeliveryAddress;
+import ru.homecredit.model.PosOnline.Item;
+import ru.homecredit.model.PosOnline.Order;
 import ru.homecredit.web.model.PosOnline.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by RRybasov on 08.09.2016.

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.homecredit.dao.OrderDAO;
-import ru.homecredit.model.Order;
+import ru.homecredit.model.PosOnline.Order;
 import ru.homecredit.web.model.PosOnline.OrderDTO;
 
 /**

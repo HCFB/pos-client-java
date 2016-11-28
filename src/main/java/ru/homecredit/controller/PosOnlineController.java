@@ -18,14 +18,14 @@ import ru.homecredit.web.model.PosOnline.OrderDTO;
  */
 @Controller
 @EnableHypermediaSupport(type = EnableHypermediaSupport.HypermediaType.HAL)
-public class MainController {
+public class PosOnlineController {
 
     private OrderService orderService;
 
     private ApplicationsService applicationsService;
 
     @Autowired
-    public MainController(OrderService orderService, ApplicationsService applicationsService) {
+    public PosOnlineController(OrderService orderService, ApplicationsService applicationsService) {
         this.orderService = orderService;
         this.applicationsService = applicationsService;
     }

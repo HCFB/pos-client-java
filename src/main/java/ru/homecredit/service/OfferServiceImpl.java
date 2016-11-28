@@ -5,10 +5,15 @@ import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import ru.homecredit.dao.OfferDAO;
+import ru.homecredit.exception.WrongOfferStatusException;
 import ru.homecredit.model.CashOnDelivery.CartItem;
 import ru.homecredit.model.CashOnDelivery.CodDeliveryAddress;
 import ru.homecredit.model.CashOnDelivery.Offer;
@@ -16,6 +21,7 @@ import ru.homecredit.model.CashOnDelivery.UserInfo;
 import ru.homecredit.web.model.CashOnDelivery.*;
 import ru.homecredit.web.model.CashOnDelivery.dto.ItemDTO;
 import ru.homecredit.web.model.CashOnDelivery.dto.OfferCreateDTO;
+import ru.homecredit.web.model.CashOnDelivery.enums.OfferStatus;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -82,6 +88,23 @@ public class OfferServiceImpl implements OfferService {
         return offerDao.findOne(offerId);
     }
 
+    @Override
+    public ChangeOfferResponse changeOffer(long offerId, ChangeOfferRequest request) throws RestClientException, WrongOfferStatusException {
+        Offer offer = offerDao.findOne(offerId);
+        ResponseEntity<ChangeOfferResponse> offerResponse;
+        OfferResponse remoteOffer = restOperations.getForObject(offerUrl + offer.getRemoteId(), OfferResponse.class);
+        if(remoteOffer.getStatus().equals(OfferStatus.signed)) {
+            HttpEntity<ChangeOfferRequest> httpRequest = new HttpEntity<>(request);
+            offerResponse = restOperations.exchange(offerUrl + offer.getRemoteId() , HttpMethod.PUT, httpRequest, ChangeOfferResponse.class);
+            offer.setStatus(request.getStatus());
+            offerDao.save(offer);
+        } else {
+            offer.setStatus(remoteOffer.getStatus());
+            offerDao.save(offer);
+            throw new WrongOfferStatusException("Не существует заказа в статусе signed с таким ID: " + offer.getRemoteId());/***/
+        }
+        return offerResponse.getBody();
+    }
 
 
     private BigDecimal getTotalPrice(List<ItemDTO> items) {

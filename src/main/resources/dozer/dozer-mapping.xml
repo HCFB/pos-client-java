@@ -22,19 +22,19 @@
     </mapping>
 
     <mapping>
-        <class-a>ru.homecredit.model.Application</class-a>
+        <class-a>ru.homecredit.model.PosOnline.Application</class-a>
         <class-b>ru.homecredit.web.model.PosOnline.ApplicationResponse</class-b>
     </mapping>
     <mapping>
-        <class-a>ru.homecredit.model.ApplicationResource</class-a>
+        <class-a>ru.homecredit.model.PosOnline.ApplicationResource</class-a>
         <class-b>ru.homecredit.web.model.PosOnline.ApplicationResourceDTO</class-b>
     </mapping>
     <mapping>
-        <class-a>ru.homecredit.model.ClientInfo</class-a>
+        <class-a>ru.homecredit.model.PosOnline.ClientInfo</class-a>
         <class-b>ru.homecredit.web.model.PosOnline.ClientInfoDTO</class-b>
     </mapping>
     <mapping>
-        <class-a>ru.homecredit.model.Order</class-a>
+        <class-a>ru.homecredit.model.PosOnline.Order</class-a>
         <class-b>ru.homecredit.web.model.PosOnline.OrderDTO</class-b>
         <field>
             <a>id</a>
@@ -42,11 +42,11 @@
         </field>
     </mapping>
     <mapping>
-        <class-a>ru.homecredit.model.Item</class-a>
+        <class-a>ru.homecredit.model.PosOnline.Item</class-a>
         <class-b>ru.homecredit.web.model.PosOnline.ItemDTO</class-b>
     </mapping>
     <mapping>
-        <class-a>ru.homecredit.model.DeliveryAddress</class-a>
+        <class-a>ru.homecredit.model.PosOnline.DeliveryAddress</class-a>
         <class-b>ru.homecredit.web.model.PosOnline.DeliveryAddressDTO</class-b>
     </mapping>
     <mapping>
