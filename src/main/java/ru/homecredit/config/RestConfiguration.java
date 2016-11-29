@@ -2,6 +2,7 @@ package ru.homecredit.config;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,6 +41,11 @@ public class RestConfiguration {
     private String clientId;
     @Value("${auth.password}")
     private String clientSecret;
+    @Value("${api.cod.username}")
+    private String codClientId;
+    @Value("${api.cod.password}")
+    private String codClientSecret;
+
 
     @Bean
     protected ClientCredentialsResourceDetails resource() {
@@ -51,14 +57,37 @@ public class RestConfiguration {
         resource.setClientSecret(clientSecret);
         resource.setGrantType("client_credentials");
         resource.setTokenName("access_token");
-
-
         return resource;
     }
 
     @Bean
+    protected ClientCredentialsResourceDetails codResource() {
+        ClientCredentialsResourceDetails resource = new ClientCredentialsResourceDetails();
+        resource.setAccessTokenUri(tokenUrl);
+        resource.setClientId(codClientId);
+        resource.setClientSecret(codClientSecret);
+        resource.setGrantType("client_credentials");
+        resource.setTokenName("access_token");
+        return resource;
+    }
+
+
+    @Bean
+    @Qualifier("posRest")
     public OAuth2RestOperations restTemplate() {
         OAuth2RestTemplate restTemplate = new OAuth2RestTemplate(resource(), new DefaultOAuth2ClientContext());
+        List<HttpMessageConverter<?>> existingConverters = restTemplate.getMessageConverters();
+        List<HttpMessageConverter<?>> newConverters = new ArrayList<>();
+        newConverters.add(getHalMessageConverter());
+        newConverters.addAll(existingConverters);
+        restTemplate.setMessageConverters(newConverters);
+        return restTemplate;
+    }
+
+    @Bean
+    @Qualifier("codRest")
+    public OAuth2RestOperations codRestTemplate() {
+        OAuth2RestTemplate restTemplate = new OAuth2RestTemplate(codResource(), new DefaultOAuth2ClientContext());
         List<HttpMessageConverter<?>> existingConverters = restTemplate.getMessageConverters();
         List<HttpMessageConverter<?>> newConverters = new ArrayList<>();
         newConverters.add(getHalMessageConverter());

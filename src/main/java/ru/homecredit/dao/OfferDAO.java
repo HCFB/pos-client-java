@@ -2,11 +2,11 @@ package ru.homecredit.dao;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import ru.homecredit.model.PosOnline.Item;
+import ru.homecredit.model.CashOnDelivery.Offer;
 
 /**
- * Created by rrybasov on 21.10.2016.
+ * Created by RRybasov on 17.11.16.
  */
 @Repository
-public interface ItemDAO extends CrudRepository<Item, Long> {
+public interface OfferDAO extends CrudRepository<Offer, Long> {
 }

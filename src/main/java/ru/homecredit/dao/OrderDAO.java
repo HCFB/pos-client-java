@@ -2,7 +2,7 @@ package ru.homecredit.dao;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import ru.homecredit.model.Order;
+import ru.homecredit.model.PosOnline.Order;
 
 /**
  * Created by rrybasov on 12.09.2016.

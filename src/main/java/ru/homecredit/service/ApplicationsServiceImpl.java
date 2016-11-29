@@ -2,19 +2,22 @@ package ru.homecredit.service;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Service;
 import ru.homecredit.dao.ApplicationDAO;
 import ru.homecredit.dao.OrderDAO;
-import ru.homecredit.model.Application;
-import ru.homecredit.model.DeliveryAddress;
-import ru.homecredit.model.Item;
-import ru.homecredit.model.Order;
-import ru.homecredit.web.model.*;
+import ru.homecredit.model.PosOnline.Application;
+import ru.homecredit.model.PosOnline.DeliveryAddress;
+import ru.homecredit.model.PosOnline.Item;
+import ru.homecredit.model.PosOnline.Order;
+import ru.homecredit.web.model.PosOnline.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by RRybasov on 08.09.2016.
@@ -30,6 +33,7 @@ public class ApplicationsServiceImpl implements ApplicationsService {
 
     @Autowired
     public ApplicationsServiceImpl(DozerBeanMapper mapper,
+                                   @Qualifier("posRest")
                                    OAuth2RestOperations restOperations,
                                    ApplicationDAO applicationDAO,
                                    OrderDAO orderDAO,
@@ -46,7 +50,7 @@ public class ApplicationsServiceImpl implements ApplicationsService {
         ClientInfoDTO clientInfo = mapper.map(createApplicationRequest, ClientInfoDTO.class);
         Order order = generateOrder(createApplicationRequest);
         OrderDTO orderDto = mapper.map(order, OrderDTO.class);
-        ApplicationRequest request = new ApplicationRequest(clientInfo, orderDto, String.format("http://%s/accept?order=%s&", host, orderDto.getOrderNum()));
+        ApplicationRequest request = new ApplicationRequest(clientInfo, orderDto, String.format("http://%s/accept?order=%s&status=", host, orderDto.getOrderNum()));
         ResponseEntity<ApplicationResponse> response = restOperations.postForEntity(createApplicationUrl, request, ApplicationResponse.class);
         Application application = mapper.map(response.getBody(), Application.class);
         application.getApplicationResource().setOrder(order);
