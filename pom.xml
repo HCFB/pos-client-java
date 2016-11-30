@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ru.homecredit</groupId>
-	<artifactId>pos-online-client</artifactId>
+	<artifactId>pos-client-java</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>pos-online-client</name>
+	<name>pos-client-java</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>
